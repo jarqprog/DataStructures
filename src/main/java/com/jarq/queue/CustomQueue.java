@@ -7,18 +7,28 @@ public class CustomQueue<T> implements ICustomQueue<T> {
     public CustomQueue() {
         this.head = new Node<>(null, null);
     }
-
-
+    
     @Override
     public boolean enqueue(T value) {
+        return enqueue(value, 0);
+    }
 
-        Node<T> node = head;
-
-        while(node.getNextNode() != null) {
-            node = node.getNextNode();
+    @Override
+    public boolean enqueue(T value, Integer priority) {
+        Node<T> first = head.getNextNode();
+        if(first == null) {
+            head.setNextNode(new Node<>(value, null, priority));
         }
 
-        node.setNextNode(new Node<>(value, null));
+        Node<T> current = head;
+        Node<T> next = first;
+
+        while(next != null && next.getPriority() >= priority) {
+            current = next;
+            next = next.getNextNode();
+        }
+
+        current.setNextNode(new Node<>(value, next, priority));
         return true;
     }
 
@@ -60,11 +70,6 @@ public class CustomQueue<T> implements ICustomQueue<T> {
         return head.getNextNode() == null;
     }
 
-    @Override
-    public boolean enqueue(T value, Integer priority) {
-        return false;
-    }
-
     private class Node<V> {
 
         private V value;
@@ -93,6 +98,10 @@ public class CustomQueue<T> implements ICustomQueue<T> {
 
         private void setNextNode(Node<V> node) {
             nextNode = node;
+        }
+
+        private int getPriority() {
+            return priority;
         }
 
         @Override
