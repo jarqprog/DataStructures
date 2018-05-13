@@ -7,4 +7,5 @@ public interface ICustomQueue<T> {
     T dequeue();
     int queueSize();
     boolean isEmpty();
+    boolean enqueue (T value, Integer priority);
 }
