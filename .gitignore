@@ -23,7 +23,7 @@
 *.txt
 *.db
 *.sql
-*.xml
+
 *.dll
 *.md
 
