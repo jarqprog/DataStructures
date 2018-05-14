@@ -6,4 +6,6 @@ public interface ICustomLinkedList<T> {
     boolean add(T element, int index);
     T get(int index);
     int size();
+    T getLast();
+    T getFirst();
 }
