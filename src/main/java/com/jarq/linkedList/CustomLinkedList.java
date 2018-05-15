@@ -20,7 +20,7 @@ public class CustomLinkedList<T> implements ICustomLinkedList<T> {
         Node<T> next = head.nextNode;
 
         int counter = 0;
-        while(next != null && counter <= index) {
+        while(next != null && counter < index) {
             current = next;
             next = next.nextNode;
             counter++;
@@ -37,7 +37,7 @@ public class CustomLinkedList<T> implements ICustomLinkedList<T> {
             throw new IndexOutOfBoundsException("Invalid index: " + index + ", size: " + size);
         }
 
-        Node<T> current = head.nextNode;
+        Node<T> current = head;
 
         int counter = 0;
         while(current.nextNode != null && counter <= index) {
