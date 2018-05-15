@@ -1,6 +1,5 @@
 package com.jarq.customStack;
 
-import java.util.Arrays;
 
 public class CustomStack<T> implements ICustomStack<T> {
 

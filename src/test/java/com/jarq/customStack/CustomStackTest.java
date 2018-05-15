@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 public class CustomStackTest {
 
     private int stackSize = 3;
-    private ICustomStack<String> stack = new CustomStack<>(3);
+    private ICustomStack<String> stack = new CustomStack<>(stackSize);
 
     @Test
     public void testPush() {
