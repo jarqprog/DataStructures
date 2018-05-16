@@ -6,11 +6,11 @@ public class DynamicIntArray implements IDynamicIntArray {
 
     private int[] storage;
 
-    DynamicIntArray(int numberOfElements) {
+    public DynamicIntArray(int numberOfElements) {
         this.storage = new int[numberOfElements+1];
     }
 
-    DynamicIntArray() {
+    public DynamicIntArray() {
         this.storage = new int[0];
     }
 
@@ -44,6 +44,16 @@ public class DynamicIntArray implements IDynamicIntArray {
                     new int[]{tmp},
                     Arrays.copyOfRange(storage, index+1, storage.length));
         }
+    }
+
+    @Override
+    public boolean contains(int value) {
+        for(int element : storage) {
+            if(element == value) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String toString() {
