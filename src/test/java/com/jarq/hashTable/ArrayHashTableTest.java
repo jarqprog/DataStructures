@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class HashTableTest {
+public class ArrayHashTableTest {
 
-    private HashTable hashTable = new HashTable(12, new StringHash());
+    private ArrayHashTable hashTable = new ArrayHashTable(12, new StringHash());
 
 
     @Test

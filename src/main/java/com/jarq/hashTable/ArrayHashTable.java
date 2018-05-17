@@ -1,6 +1,6 @@
 package com.jarq.hashTable;
 
-public class HashTable {
+public class ArrayHashTable {
 
 
 	private Node[] table;
@@ -8,7 +8,7 @@ public class HashTable {
 	private int tableSize;
 	private int numberOfWords;
 
-	public HashTable(int tableSize, Hash<String> hash) {
+	public ArrayHashTable(int tableSize, Hash<String> hash) {
 
 		this.table = new Node[tableSize];
 		this.hash = hash;
