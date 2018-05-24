@@ -6,8 +6,11 @@ import static org.junit.Assert.*;
 
 public class MyBinarySearchTreeTest {
 
+    private BinarySearchTree<Integer> bst = new MyBinarySearchTree<>();
+
     @Test
     public void add() {
+        assertTrue(bst.add(10));
     }
 
     @Test
