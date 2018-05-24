@@ -93,7 +93,75 @@ public class MyBinarySearchTreeTest {
 
 
     @Test
-    public void remove() {
+    public void remove_with_empty_tree() {
+        assertFalse(bst.remove(1));
+    }
+
+    @Test
+    public void remove_not_existing_element() {
+
+        bst.add(5);
+        bst.add(15);
+        bst.add(20);
+
+        assertFalse(bst.remove(3));
+    }
+
+    @Test
+    public void remove_existing_element_in_small_tree() {
+
+        bst.add(1);
+        bst.add(22);
+        bst.add(0);
+        bst.add(3);
+        bst.add(26);
+        bst.add(21);
+
+        int size = bst.size();
+
+        assertTrue(bst.remove(26));
+        assertEquals(size-1, bst.size());
+    }
+
+    @Test
+    public void remove_existing_element_multiple_times() {
+
+        int element = 17;
+
+        bst.add(element);
+        bst.add(element);
+        bst.add(22);
+        bst.add(3);
+        bst.add(element);
+        bst.add(-1);
+
+        int size = bst.size();
+
+        assertTrue(bst.remove(element));
+        assertTrue(bst.remove(element));
+        assertTrue(bst.remove(element));
+        assertFalse(bst.remove(element));
+        assertEquals(size-3, bst.size());
+    }
+
+    @Test
+    public void remove_existing_elements_in_big_tree() {
+
+        bst.add(1);
+        bst.add(22);
+        bst.add(0);
+        bst.add(3);
+        bst.add(26);
+        bst.add(21);
+
+        fillTreeWithInts(100);
+
+        int size = bst.size();
+
+        assertTrue(bst.remove(50));
+        assertTrue(bst.remove(22));
+        assertTrue(bst.remove(21));
+        assertEquals(size-3, bst.size());
     }
 
     @Test
