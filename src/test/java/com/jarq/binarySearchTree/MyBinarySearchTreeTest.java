@@ -129,6 +129,19 @@ public class MyBinarySearchTreeTest {
     }
 
     @Test
+    public void findMaximum_using_tree_with_five_elements() {
+
+        int expected = 855;
+        bst.add(776);
+        bst.add(89);
+        bst.add(expected);
+        bst.add(0);
+        bst.add(-332);
+
+        assertEquals(expected, (long) bst.findMaximum());
+    }
+
+    @Test
     public void findMaximum_using_tree_with_many_elements() {
 
         int maxValue = 1000;

@@ -33,6 +33,10 @@ public class MyBinarySearchTree<T extends Comparable<T>> implements BinarySearch
 
     @Override
     public T findMaximum() {
+        Node<T> node = root.maximum();
+        if(node != null) {
+            return node.data;
+        }
         return null;
     }
 
@@ -92,6 +96,13 @@ public class MyBinarySearchTree<T extends Comparable<T>> implements BinarySearch
                 return this;
             }
             return this.left.minimum();
+        }
+
+        private Node<N> maximum() {
+            if(this.right == null) {
+                return this;
+            }
+            return this.right.maximum();
         }
     }
 }
