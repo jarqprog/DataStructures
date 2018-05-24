@@ -19,9 +19,10 @@ public class MyBinarySearchTree<T extends Comparable<T>> implements BinarySearch
 
     @Override
     public boolean remove(T value) {
-        if(root == null) {
+        if( ! contains(value) ) {
             return false;
         }
+
         if(root.delete(value)) {
             size--;
             return true;
@@ -31,10 +32,7 @@ public class MyBinarySearchTree<T extends Comparable<T>> implements BinarySearch
 
     @Override
     public boolean contains(T value) {
-        if(root == null) {
-            return false;
-        }
-        return root.find(value) != null;
+        return root != null && root.find(value) != null;
     }
 
     @Override
@@ -44,10 +42,7 @@ public class MyBinarySearchTree<T extends Comparable<T>> implements BinarySearch
         }
 
         Node<T> node = root.minimum();
-        if(node != null) {
-            return node.data;
-        }
-        return null;
+        return node != null ? node.data : null;
     }
 
     @Override
@@ -57,10 +52,7 @@ public class MyBinarySearchTree<T extends Comparable<T>> implements BinarySearch
         }
 
         Node<T> node = root.maximum();
-        if(node != null) {
-            return node.data;
-        }
-        return null;
+        return node != null ? node.data : null;
     }
 
     @Override
@@ -101,29 +93,23 @@ public class MyBinarySearchTree<T extends Comparable<T>> implements BinarySearch
             if(data == null) {
                 return null;
             }
-            int factor = data.compareTo(value);
-            if(factor == 0) {
+
+            if( compareTo(value) == 0 ) {
                 return this;
             }
 
-            else if(factor > 0) {
+            else if( compareTo(value) > 0 ) {
                 return (leftChild == null) ? null : leftChild.find(value);
             }
             return (rightChild == null) ? null : rightChild.find(value);
         }
 
         private Node<N> minimum() {
-            if(this.leftChild == null) {
-                return this;
-            }
-            return this.leftChild.minimum();
+            return this.leftChild == null ? this : this.leftChild.minimum();
         }
 
         private Node<N> maximum() {
-            if(this.rightChild == null) {
-                return this;
-            }
-            return this.rightChild.maximum();
+            return this.rightChild == null ? this : this.rightChild.maximum();
         }
 
         private boolean delete(N value) {
@@ -132,47 +118,114 @@ public class MyBinarySearchTree<T extends Comparable<T>> implements BinarySearch
                 return false;
             }
 
-            boolean isLeftChild = node.compareTo(node.parent) < 0;
-
-            if(node.isLeaf()) {  // has no children
-                if(isLeftChild) {
-                    node.parent.leftChild = null;
+            if(! node.hasParent() ) {  // it's tree's root
+                if( node.isLeaf() ) {
+                    node.data = null;
                 } else {
-                    node.parent.rightChild = null;
+                    Node<N> leftChild = node.leftChild;
+                    if (leftChild != null) {
+                        Node<N> successor = leftChild.maximum();
+                        // successor is node with highest value on the left branch (it's always childless leaf)
+                        successor.breakRelationWithParent(successor.isLeftChild());  // dereference parent relation
+                        node.data = successor.data;
+                    } else {
+                        node.data = rightChild.data;
+                        rightChild.parent = null;
+                        node.adoptSomeonesChildren(rightChild);
+                    }
                 }
+                return true;
+            }
+
+
+            if( node.isLeaf() ) {  // it's regular node
+                node.breakRelationWithParent();
             } else {
                 Node<N> leftChild = node.leftChild;
                 if(leftChild != null) {
                     Node<N> successor = leftChild.maximum();
-                    successor.parent.rightChild = null;
+                    // successor is node with highest value on the left branch (it's always childless leaf)
+                    successor.breakRelationWithParent(successor.isLeftChild());  // dereference parent relation
+                    successor.adoptSomeonesChildren(node);
+                    successor.grabSomeonesParent(node);
 
-                    successor.leftChild = node.leftChild;
-                    successor.rightChild = node.rightChild;
-                    if(isLeftChild) {
-                        node.parent.leftChild = successor;
-                    } else {
-                        node.parent.rightChild = successor;
-                    }
                 } else {
-                    if(isLeftChild) {
-                        node.parent.leftChild = node.rightChild;
+                    if( node.isLeftChild() ) {
+                        node.rightChild.grabSomeonesParent(node, true);
                     } else {
-                        node.parent.rightChild = node.rightChild;
+                        node.rightChild.grabSomeonesParent(node, false);
                     }
+
                 }
             }
             return true;
         }
 
         private int compareTo(Node<N> node) {
-            if(node == null) {
-                return 1;
-            }
-            return this.data.compareTo(node.data);
+            return data.compareTo(node.data);
+        }
+
+        private int compareTo(N value) {
+            return data.compareTo(value);
         }
 
         private boolean isLeaf() {
             return leftChild == null && rightChild == null;
+        }
+
+        private boolean hasParent() {
+            return parent != null;
+        }
+
+        private void breakRelationWithParent() {
+            if(hasParent()) {
+                breakRelationWithParent( isLeftChild() );
+            }
+        }
+
+        private void breakRelationWithParent(boolean isLeftChild) {
+            if(hasParent()) {
+                if(isLeftChild) {
+                    parent.leftChild = null;
+                } else {
+                    parent.rightChild = null;
+                }
+                parent = null;
+            }
+        }
+
+        private void adoptSomeonesChildren(Node<N> formerParent) {
+
+            leftChild = formerParent.leftChild;
+            formerParent.leftChild = null;
+            if(leftChild != null) {
+                leftChild.parent = this;
+            }
+
+            rightChild = formerParent.rightChild;
+            formerParent.rightChild = null;
+            if(rightChild != null) {
+                rightChild.parent = this;
+            }
+        }
+
+        private void grabSomeonesParent(Node<N> formerChild) {
+            grabSomeonesParent(formerChild, formerChild.isLeftChild());
+        }
+
+        private void grabSomeonesParent(Node<N> formerChild, boolean beLeftChild) {
+            if(formerChild != null && formerChild.parent != null) {
+                parent = formerChild.parent;
+                if( beLeftChild ) {
+                    formerChild.parent.leftChild = this;
+                } else {
+                    formerChild.parent.rightChild = this;
+                }
+            }
+        }
+
+        private boolean isLeftChild() {
+            return parent != null && this.compareTo(parent) < 0;
         }
     }
 }

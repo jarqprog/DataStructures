@@ -13,7 +13,6 @@ public class MyBinarySearchTreeTest {
 
     private BinarySearchTree<Integer> bst = new MyBinarySearchTree<>();
 
-
     @Test
     public void size_with_empty_tree() {
         assertEquals(0, bst.size());
@@ -98,6 +97,31 @@ public class MyBinarySearchTreeTest {
     }
 
     @Test
+    public void remove_element_from_root() {
+
+        bst.add(5);
+
+        assertTrue(bst.remove(5));
+        assertEquals(0, bst.size());
+    }
+
+    @Test
+    public void remove_element_from_root_two_times() {
+
+        bst.add(5);
+        bst.add(5);
+
+        assertTrue(bst.remove(5));
+        assertEquals(1, bst.size());
+
+        assertTrue(bst.remove(5));
+        assertEquals(0, bst.size());
+
+        assertFalse(bst.remove(5));
+        assertEquals(0, bst.size());
+    }
+
+    @Test
     public void remove_not_existing_element() {
 
         bst.add(5);
@@ -105,10 +129,13 @@ public class MyBinarySearchTreeTest {
         bst.add(20);
 
         assertFalse(bst.remove(3));
+        assertFalse(bst.remove(6));
+        assertFalse(bst.remove(9));
+        assertEquals(3, bst.size());
     }
 
     @Test
-    public void remove_existing_element_in_small_tree() {
+    public void remove_existing_elements_in_small_tree() {
 
         bst.add(1);
         bst.add(22);
@@ -121,6 +148,14 @@ public class MyBinarySearchTreeTest {
 
         assertTrue(bst.remove(26));
         assertEquals(size-1, bst.size());
+        assertTrue(bst.remove(1));
+        assertEquals(size-2, bst.size());
+        assertTrue(bst.remove(22));
+        assertEquals(size-3, bst.size());
+        assertTrue(bst.remove(0));
+        assertEquals(size-4, bst.size());
+        assertTrue(bst.remove(21));
+        assertEquals(size-5, bst.size());
     }
 
     @Test
@@ -128,6 +163,7 @@ public class MyBinarySearchTreeTest {
 
         int element = 17;
 
+        bst.add(1);
         bst.add(element);
         bst.add(element);
         bst.add(22);
@@ -142,6 +178,29 @@ public class MyBinarySearchTreeTest {
         assertTrue(bst.remove(element));
         assertFalse(bst.remove(element));
         assertEquals(size-3, bst.size());
+    }
+
+    @Test
+    public void remove_existing_element_multiple_times_if_element_in_root() {
+
+        int element = 10;
+
+        bst.add(element);
+        bst.add(element);
+        bst.add(22);
+        bst.add(3);
+        bst.add(element);
+        bst.add(-1);
+        bst.add(element);
+
+        int size = bst.size();
+
+        assertTrue(bst.remove(element));
+        assertTrue(bst.remove(element));
+        assertTrue(bst.remove(element));
+        assertTrue(bst.remove(element));
+        assertFalse(bst.remove(element));
+        assertEquals(size-4, bst.size());
     }
 
     @Test
