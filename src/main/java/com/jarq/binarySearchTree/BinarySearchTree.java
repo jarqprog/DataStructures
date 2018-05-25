@@ -8,5 +8,5 @@ public interface BinarySearchTree<T extends Comparable<T>> {
     T findMinimum();
     T findMaximum();
     int size();
-    void drawTree();
+    Node<T> getRoot();
 }
