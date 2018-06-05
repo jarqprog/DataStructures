@@ -9,58 +9,52 @@ public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
 
     private Set<Airport> airports;
     private Set<Connection> connections;
-    private Map<Airport, Set<Connection>> adjacents;
+    private Map<Airport, Set<Connection>> adjacent;
 
     public MyHolidaysFlightGraph() {
         this.airports = new HashSet<>();
         this.connections = new HashSet<>();
-        this.adjacents = new HashMap<>();
+        this.adjacent = new HashMap<>();
     }
 
     @Override
-    public boolean addAirport(Airport airport) {
-        return airports.add(airport);
-    }
-
-    @Override
-    public boolean addAirport(String name) {
-        Airport airport = new Airport(name);
-        return addAirport(airport);
-    }
-
-    @Override
-    public boolean addConnection(Connection connection) {
-        if(! connections.add(connection)) {
+    public boolean addConnection(Airport startPoint, Airport destination, double cost, double distance) {
+        Connection connection = new Connection(startPoint, destination, cost, distance);
+        if(connections.contains(connection)) {
             return false;
         }
 
-        adjacents.putIfAbsent(connection.getFirstCity(), new HashSet<>());
-        adjacents.putIfAbsent(connection.getSecondCity(), new HashSet<>());
+        // register airports
+        airports.add(startPoint);
+        airports.add(destination);
+        adjacent.putIfAbsent(connection.getFirstCity(), new HashSet<>());
+        adjacent.putIfAbsent(connection.getSecondCity(), new HashSet<>());
 
-        adjacents.get(connection.getFirstCity()).add(connection);
-        adjacents.get(connection.getSecondCity()).add(connection);
+        // register connections bounded with airports
+        connections.add(connection);
+        adjacent.get(connection.getFirstCity()).add(connection);
+        adjacent.get(connection.getSecondCity()).add(connection);
 
         return true;
     }
 
     @Override
-    public boolean addConnection(Airport first, Airport second, double cost, double distance) {
-        Connection connection = new Connection(first, second, cost, distance);
-        return addConnection(connection);
+    public int countAirports() {
+        return airports.size();
     }
 
     @Override
-    public int size() {
-        return 0;
+    public int countConnections() {
+        return connections.size();
     }
 
     @Override
-    public Connection findShortest(Airport first, Airport second) {
+    public Connection findShortestConnection(Airport startPoint, Airport destination) {
         return null;
     }
 
     @Override
-    public Connection findCheapest(Airport first, Airport second) {
+    public Connection findCheapestConnection(Airport startPoint, Airport destination) {
         return null;
     }
 }

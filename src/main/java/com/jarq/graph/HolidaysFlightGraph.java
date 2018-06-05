@@ -2,11 +2,9 @@ package com.jarq.graph;
 
 public interface HolidaysFlightGraph {
 
-    boolean addAirport(Airport airport);
-    boolean addAirport(String name);
-    boolean addConnection(Connection connection);
-    boolean addConnection(Airport first, Airport second, double cost, double distance);
-    int size();
-    Connection findShortest(Airport first, Airport second);
-    Connection findCheapest(Airport first, Airport second);
+    boolean addConnection(Airport startPoint, Airport destination, double cost, double distance);
+    int countAirports();
+    int countConnections();
+    Connection findShortestConnection(Airport startPoint, Airport destination);
+    Connection findCheapestConnection(Airport startPoint, Airport destination);
 }

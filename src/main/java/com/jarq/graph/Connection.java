@@ -1,5 +1,7 @@
 package com.jarq.graph;
 
+import java.util.Objects;
+
 public class Connection {
 
     private final Airport firstCity;
@@ -36,6 +38,29 @@ public class Connection {
 
     @Override
     public String toString() {
-        return String.format("Flight between %s - %s, distance: %f, price: %f", firstCity, secondCity, distance, cost);
+        return String.format("Flight between %s - %s, distance: %.2f, price: %.2f", firstCity, secondCity, distance, cost);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.firstCity, this.secondCity, (int) this.cost, (int) this.distance);
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(this == object) {
+            return true;
+        }
+
+        if( !(object instanceof Connection) ) {
+            return false;
+        }
+
+        Connection con = (Connection) object;
+        return
+                this.firstCity.equals(con.firstCity) &&
+                this.secondCity.equals(con.secondCity) &&
+                (int) this.cost == (int) con.cost &&
+                (int) this.distance == (int) con.distance;
     }
 }
