@@ -7,12 +7,12 @@ import java.util.*;
 
 public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
 
-    private Set<Airport> airports;
+    private List<Airport> airports;  // use List instead of Set because of Dijkstra algorithm
     private Set<Connection> connections;
     private Map<Airport, Set<Connection>> adjacent;
 
     public MyHolidaysFlightGraph() {
-        this.airports = new HashSet<>();
+        this.airports = new LinkedList<>();
         this.connections = new HashSet<>();
         this.adjacent = new HashMap<>();
     }
@@ -25,8 +25,13 @@ public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
         }
 
         // register airports
-        airports.add(startPoint);
-        airports.add(destination);
+        if(! airports.contains(startPoint)) {
+            airports.add(0, startPoint);
+        }
+
+        if(! airports.contains(destination)) {
+            airports.add(0, destination);
+        }
 
         adjacent.putIfAbsent(connection.getStartPoint(), new HashSet<>());
         adjacent.putIfAbsent(connection.getDestination(), new HashSet<>());

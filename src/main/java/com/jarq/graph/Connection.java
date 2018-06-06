@@ -2,41 +2,41 @@ package com.jarq.graph;
 
 import java.util.Objects;
 
-public class Connection {
+class Connection {
 
     private final Airport startPoint;
     private final Airport destination;
     private double distance;
     private double cost;
 
-    public Connection(Airport startPoint, Airport destination, double distance, double cost) {
+    Connection(Airport startPoint, Airport destination, double distance, double cost) {
         this.startPoint = startPoint;
         this.destination = destination;
         this.distance = distance;
         this.cost = cost;
     }
 
-    public Airport[] getAirports() {
+    Airport[] getAirports() {
         return new Airport[]{startPoint, destination};
     }
 
-    public Airport getStartPoint() {
+    Airport getStartPoint() {
         return startPoint;
     }
 
-    public Airport getDestination() {
+    Airport getDestination() {
         return destination;
     }
 
-    public double getDistance() {
+    double getDistance() {
         return distance;
     }
 
-    public double getCost() {
+    double getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    void setCost(double cost) {
         this.cost = cost;
     }
 

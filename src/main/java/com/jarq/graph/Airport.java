@@ -1,14 +1,14 @@
 package com.jarq.graph;
 
-public class Airport {
+class Airport {
 
     private final String name;
 
-    public Airport(String name) {
+    Airport(String name) {
         this.name = name;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
