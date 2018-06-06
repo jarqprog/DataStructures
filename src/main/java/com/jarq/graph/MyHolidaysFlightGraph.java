@@ -1,9 +1,9 @@
 package com.jarq.graph;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import com.jarq.queue.CustomQueue;
+import com.jarq.queue.ICustomQueue;
+
+import java.util.*;
 
 public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
 
@@ -27,13 +27,13 @@ public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
         // register airports
         airports.add(startPoint);
         airports.add(destination);
-        adjacent.putIfAbsent(connection.getFirstCity(), new HashSet<>());
-        adjacent.putIfAbsent(connection.getSecondCity(), new HashSet<>());
+
+        adjacent.putIfAbsent(connection.getStartPoint(), new HashSet<>());
+        adjacent.putIfAbsent(connection.getDestination(), new HashSet<>());
 
         // register connections bounded with airports
         connections.add(connection);
-        adjacent.get(connection.getFirstCity()).add(connection);
-        adjacent.get(connection.getSecondCity()).add(connection);
+        adjacent.get(connection.getStartPoint()).add(connection);
 
         return true;
     }
@@ -56,5 +56,45 @@ public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
     @Override
     public Connection findCheapestConnection(Airport startPoint, Airport destination) {
         return null;
+    }
+
+    @Override
+    public boolean hasConnection(Airport startPoint, Airport destination) {
+        if(adjacent.get(startPoint) == null || adjacent.get(startPoint).isEmpty()) {
+            return false;
+        }
+
+        ICustomQueue<Connection> queue = new CustomQueue<>();
+        Set<Connection> checked = new HashSet<>();
+
+        Connection examined;
+
+        for(Connection con : adjacent.get(startPoint)) {
+            queue.enqueue(con);
+            checked.add(con);
+        }
+
+        while(! queue.isEmpty() ) {
+            examined = queue.dequeue();
+            if(examined.getDestination() == destination) {
+                return true;
+            }
+
+            for(Airport port : examined.getAirports()) {
+                if(port != startPoint) {
+                    for(Connection con : adjacent.get(port)) {
+                        if(con.getDestination() == destination) {
+                            return true;
+                        }
+
+                        if(! checked.contains(con)) {
+                            queue.enqueue(con);
+                            checked.add(con);
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

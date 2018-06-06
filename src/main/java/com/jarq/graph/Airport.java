@@ -14,6 +14,6 @@ public class Airport {
 
     @Override
     public String toString() {
-        return "Airport: " + name;
+        return name;
     }
 }

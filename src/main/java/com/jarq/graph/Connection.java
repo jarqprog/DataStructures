@@ -4,24 +4,28 @@ import java.util.Objects;
 
 public class Connection {
 
-    private final Airport firstCity;
-    private final Airport secondCity;
+    private final Airport startPoint;
+    private final Airport destination;
     private double distance;
     private double cost;
 
-    public Connection(Airport firstCity, Airport secondCity, double distance, double cost) {
-        this.firstCity = firstCity;
-        this.secondCity = secondCity;
+    public Connection(Airport startPoint, Airport destination, double distance, double cost) {
+        this.startPoint = startPoint;
+        this.destination = destination;
         this.distance = distance;
         this.cost = cost;
     }
 
-    public Airport getFirstCity() {
-        return firstCity;
+    public Airport[] getAirports() {
+        return new Airport[]{startPoint, destination};
     }
 
-    public Airport getSecondCity() {
-        return secondCity;
+    public Airport getStartPoint() {
+        return startPoint;
+    }
+
+    public Airport getDestination() {
+        return destination;
     }
 
     public double getDistance() {
@@ -38,12 +42,12 @@ public class Connection {
 
     @Override
     public String toString() {
-        return String.format("Flight between %s - %s, distance: %.2f, price: %.2f", firstCity, secondCity, distance, cost);
+        return String.format("%s - %s, distance: %.2f, price: %.2f", startPoint, destination, distance, cost);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.firstCity, this.secondCity, (int) this.cost, (int) this.distance);
+        return Objects.hash(this.startPoint, this.destination, (int) this.cost, (int) this.distance);
     }
 
     @Override
@@ -58,8 +62,8 @@ public class Connection {
 
         Connection con = (Connection) object;
         return
-                this.firstCity.equals(con.firstCity) &&
-                this.secondCity.equals(con.secondCity) &&
+                this.startPoint.equals(con.startPoint) &&
+                this.destination.equals(con.destination) &&
                 (int) this.cost == (int) con.cost &&
                 (int) this.distance == (int) con.distance;
     }

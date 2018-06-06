@@ -7,4 +7,5 @@ public interface HolidaysFlightGraph {
     int countConnections();
     Connection findShortestConnection(Airport startPoint, Airport destination);
     Connection findCheapestConnection(Airport startPoint, Airport destination);
+    boolean hasConnection(Airport startPoint, Airport destination);
 }
