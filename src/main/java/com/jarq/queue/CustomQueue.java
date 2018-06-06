@@ -3,6 +3,7 @@ package com.jarq.queue;
 public class CustomQueue<T> implements ICustomQueue<T> {
 
     private Node<T> head;
+    private int size = 0;
 
     public CustomQueue() {
         this.head = new Node<>(null, null);
@@ -29,6 +30,7 @@ public class CustomQueue<T> implements ICustomQueue<T> {
         }
 
         current.setNextNode(new Node<>(value, next, priority));
+        size++;
         return true;
     }
 
@@ -43,31 +45,38 @@ public class CustomQueue<T> implements ICustomQueue<T> {
 
     @Override
     public T dequeue() {
-        Node<T> first = head.getNextNode();
-        if(first == null) {
+        if(size == 0) {
             return null;
         }
-
+        Node<T> first = head.getNextNode();
         Node<T> second = first.getNextNode();
         head.setNextNode(second);
+        size--;
         return first.getValue();
     }
 
     @Override
-    public int queueSize() {
+    public int size() {
+        return size;
+    }
 
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
         Node<T> node = head;
-        int counter = 0;
+
         while(node.getNextNode() != null) {
+
             node = node.getNextNode();
-            counter++;
+            stringBuilder.append(String.valueOf(node.value));
+            stringBuilder.append("; ");
         }
-        return counter;
+        return stringBuilder.toString();
     }
 
     @Override
     public boolean isEmpty() {
-        return head.getNextNode() == null;
+        return size==0;
     }
 
     private class Node<V> {
