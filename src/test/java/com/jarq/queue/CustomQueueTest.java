@@ -68,14 +68,14 @@ public class CustomQueueTest {
 
     @Test
     public void testQueueSize_if_empty() {
-        assertEquals(0, queue.queueSize());
+        assertEquals(0, queue.size());
     }
 
     @Test
     public void testQueueSize_if_to_elements_inside() {
         queue.enqueue("one");
         queue.enqueue("two");
-        assertEquals(2, queue.queueSize());
+        assertEquals(2, queue.size());
     }
 
     @Test
