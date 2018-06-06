@@ -1,4 +1,4 @@
-package com.jarq.graph;
+package com.jarq.graph.holidaysFlights;
 
 import com.jarq.queue.CustomQueue;
 import com.jarq.queue.ICustomQueue;
@@ -18,8 +18,8 @@ public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
     }
 
     @Override
-    public boolean addConnection(Airport startPoint, Airport destination, double cost, double distance) {
-        Connection connection = new Connection(startPoint, destination, cost, distance);
+    public boolean addConnection(Airport startPoint, Airport destination, double distance, double cost) {
+        Connection connection = new Connection(startPoint, destination, distance, cost);
         if(connections.contains(connection)) {
             return false;
         }
@@ -51,16 +51,6 @@ public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
     @Override
     public int countConnections() {
         return connections.size();
-    }
-
-    @Override
-    public Connection findShortestConnection(Airport startPoint, Airport destination) {
-        return null;
-    }
-
-    @Override
-    public Connection findCheapestConnection(Airport startPoint, Airport destination) {
-        return null;
     }
 
     @Override
@@ -101,5 +91,20 @@ public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
             }
         }
         return false;
+    }
+
+    @Override
+    public List<Airport> getAirports() {
+        return airports;
+    }
+
+    @Override
+    public Set<Connection> getConnections() {
+        return connections;
+    }
+
+    @Override
+    public Map<Airport, Set<Connection>> getAdjacent() {
+        return adjacent;
     }
 }

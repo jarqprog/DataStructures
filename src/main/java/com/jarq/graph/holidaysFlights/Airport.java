@@ -1,4 +1,4 @@
-package com.jarq.graph;
+package com.jarq.graph.holidaysFlights;
 
 class Airport {
 
