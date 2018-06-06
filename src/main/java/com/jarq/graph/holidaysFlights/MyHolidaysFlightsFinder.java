@@ -63,11 +63,15 @@ public class MyHolidaysFlightsFinder implements HolidaysFlightsFinder {
     private List<Connection> getConnections(Airport startPoint, Airport destination,
                                                   ConnectionMethod method,
                                                   Comparator<Connection> comparator) {
+        if(!adjacent.containsKey(startPoint) || !adjacent.containsKey(destination)) {
+            return new ArrayList<>();
+        }
+
         int length = adjacent.size();
         double infinity = Double.POSITIVE_INFINITY;
 
         Map<Airport,Double> values = new HashMap<>(length);  // distances or costs (depends on method arguments)
-        Map<Airport,Connection> connections = new HashMap<>(length);
+        Map<Airport,Connection> connections = new LinkedHashMap<>(length);
 
         PriorityQueue<Connection> queue = new PriorityQueue<>(comparator);
         queue.addAll(adjacent.get(startPoint));
