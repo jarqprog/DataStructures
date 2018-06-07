@@ -23,19 +23,20 @@ public class HolidaysFlightsDemo {
         Airport slupsk = new Airport("Slupsk");
         Airport bialystok = new Airport("Bialystok");
 
-        graph.addConnection(bytom, lodz, 10000, 10);
-        graph.addConnection(lodz, bialystok, 1, 101);
-        graph.addConnection(slupsk, bytom, 100, 112);
-        graph.addConnection(lodz, poznan, 100, 103);
-        graph.addConnection(poznan, gdansk, 100, 1012);
-        graph.addConnection(lodz, krakow, 2000, 1101);
-        graph.addConnection(poznan, bialystok, 1, 1134);
-        graph.addConnection(krakow, slupsk, 50, 232);
-        graph.addConnection(gdansk, lodz, 100, 46);
-        graph.addConnection(slupsk, lodz, 250, 657);
-        graph.addConnection(bialystok, lodz, 2, 123);
-        graph.addConnection(poznan, lodz, 100, 132);
-        graph.addConnection(krakow, poznan, 100, 1);
+        graph.addConnection(bytom, lodz, 250, 80);
+        graph.addConnection(lodz, bialystok, 310, 101);
+        graph.addConnection(slupsk, bytom, 650, 99);
+        graph.addConnection(lodz, poznan, 165, 80);
+        graph.addConnection(poznan, gdansk, 290, 75);
+        graph.addConnection(lodz, krakow, 300, 20);
+        graph.addConnection(poznan, bialystok, 289, 120);
+        graph.addConnection(krakow, slupsk, 700, 20);  // discount!
+        graph.addConnection(gdansk, lodz, 301, 19.99);  // discount!
+        graph.addConnection(slupsk, lodz, 299, 99.99);
+        graph.addConnection(bialystok, lodz, 310, 101);
+        graph.addConnection(poznan, lodz, 165, 409.99);
+        graph.addConnection(krakow, poznan, 410, 19.99);  // discount!
+        graph.addConnection(krakow, lodz, 710, 165);  // fantasy ;)
 
         // start demo
         HolidaysFlightsFinder finder = new MyHolidaysFlightsFinder(graph);
@@ -60,7 +61,7 @@ public class HolidaysFlightsDemo {
 
         StringBuilder stringBuilder = new StringBuilder(String.format("\n***%s***\n", LocalDateTime.now()));
 
-        stringBuilder.append(String.format("Operation for travel between %s (start) and %s (landing):",
+        stringBuilder.append(String.format("Operation for travel between %s (start) and %s (landing)\n\n",
                 startPoint, destination));
 
         stringBuilder.append("- all airports:\n");
@@ -70,13 +71,13 @@ public class HolidaysFlightsDemo {
 
         distance = finder.calculateShortestWay(startPoint, destination);
         shortestJourney = finder.getShortestWay(startPoint, destination);
-        stringBuilder.append(String.format("shortest possible distance: %s\n", distance));
+        stringBuilder.append(String.format("shortest possible distance: %.2f ", distance));
         stringBuilder.append("with connections: \n");
         stringBuilder.append(addCollectionToString(shortestJourney));
 
         cost = finder.calculateCheapestTravel(startPoint, destination);
         cheapestJourney = finder.getCheapestTravel(startPoint, destination);
-        stringBuilder.append(String.format("lowest possible cost: %s\n",cost));
+        stringBuilder.append(String.format("lowest possible cost: %.2f ",cost));
         stringBuilder.append("with connections: \n");
         stringBuilder.append(addCollectionToString(cheapestJourney));
         stringBuilder.append("\n***Done***\n");
@@ -108,5 +109,4 @@ public class HolidaysFlightsDemo {
         sb.append("\n");
         return sb.toString();
     }
-
 }
