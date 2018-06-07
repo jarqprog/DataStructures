@@ -1,5 +1,13 @@
 package com.jarq.graph.holidaysFlights;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 public class HolidaysFlightsDemo {
 
     public static void main(String[] args) {
@@ -32,26 +40,73 @@ public class HolidaysFlightsDemo {
         // start demo
         HolidaysFlightsFinder finder = new MyHolidaysFlightsFinder(graph);
 
-        System.out.println("Holidays Flights Demo!\n");
-        System.out.println("Created graph with airports:");
-        graph.getAirports().forEach(System.out::println);
+        String result = buildResult(graph, finder, krakow, lodz);
+        displayResult(result);
+        saveResult(result);
+    }
 
-        System.out.println("\n..and flights:");
-        graph.getConnections().forEach(System.out::println);
+    private static void displayResult(String result) {
+        System.out.println(result);
+    }
 
-        System.out.println();
-        System.out.println("\nLet's find shortest way between Krakow and Lodz:");
+    private static String buildResult(HolidaysFlightGraph flights, HolidaysFlightsFinder finder,
+                                      Airport startPoint, Airport destination) {
 
-        System.out.println("shortest distance is: " + finder.calculateShortestWay(krakow, lodz));
-        System.out.print("\n..if choose airport(s):\n");
-        finder.getShortestWay(krakow, lodz).forEach(System.out::println);
+        double distance;
+        double cost;
+        List<Connection> shortestJourney, cheapestJourney;
+        Set<Airport> airports = flights.getAirports();
+        Set<Connection> connections = flights.getConnections();
 
-        System.out.println();
-        System.out.println("\nLet's find cheapest way between Krakow and Lodz:");
+        StringBuilder stringBuilder = new StringBuilder(String.format("\n***%s***\n", LocalDateTime.now()));
 
-        System.out.println("cheapest travel is: " + finder.calculateCheapestTravel(krakow, lodz));
-        System.out.print("\n..if choose airport(s):\n");
-        finder.getCheapestTravel(krakow, lodz).forEach(System.out::println);
+        stringBuilder.append(String.format("Operation for travel between %s (start) and %s (landing):",
+                startPoint, destination));
+
+        stringBuilder.append("- all airports:\n");
+        stringBuilder.append(addCollectionToString(airports));
+        stringBuilder.append("- possible connections:\n");
+        stringBuilder.append(addCollectionToString(connections));
+
+        distance = finder.calculateShortestWay(startPoint, destination);
+        shortestJourney = finder.getShortestWay(startPoint, destination);
+        stringBuilder.append(String.format("shortest possible distance: %s\n", distance));
+        stringBuilder.append("with connections: \n");
+        stringBuilder.append(addCollectionToString(shortestJourney));
+
+        cost = finder.calculateCheapestTravel(startPoint, destination);
+        cheapestJourney = finder.getCheapestTravel(startPoint, destination);
+        stringBuilder.append(String.format("lowest possible cost: %s\n",cost));
+        stringBuilder.append("with connections: \n");
+        stringBuilder.append(addCollectionToString(cheapestJourney));
+        stringBuilder.append("\n***Done***\n");
+
+        return stringBuilder.toString();
+    }
+
+    private static void saveResult(String result) {
+
+        String filePath = "src/main/resources/holidaysFlights.md";
+
+        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))) {
+            bufferedWriter.write(result);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        System.out.println("Saved to file: " + filePath);
+
+    }
+
+    private static <T> String addCollectionToString(Collection<T> collection) {
+        StringBuilder sb = new StringBuilder();
+        for(T element : collection) {
+            sb.append("\t");
+            sb.append(element.toString());
+            sb.append("\n");
+        }
+        sb.append("\n");
+        return sb.toString();
     }
 
 }
