@@ -62,11 +62,6 @@ public class ArrayQueue<T> implements ICustomQueue<T> {
         return size() == 0;
     }
 
-    @Override
-    public boolean enqueue(T value, Integer priority) {
-        throw new NotImplementedException();
-    }
-
     private boolean extendArrayAndAddElement(T elementToAdd) {
 
         int arraySizeMultiplier = 2;
