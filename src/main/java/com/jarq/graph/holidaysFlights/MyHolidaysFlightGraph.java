@@ -1,8 +1,5 @@
 package com.jarq.graph.holidaysFlights;
 
-import com.jarq.queue.CustomQueue;
-import com.jarq.queue.ICustomQueue;
-
 import java.util.*;
 
 public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
@@ -54,18 +51,22 @@ public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
             return false;
         }
 
-        ICustomQueue<Connection> queue = new CustomQueue<>();
+        Queue<Connection> queue = new ArrayDeque<>();
         Set<Connection> checked = new HashSet<>();
 
         Connection examined;
 
         for(Connection con : adjacent.get(startPoint)) {
-            queue.enqueue(con);
+            queue.add(con);
             checked.add(con);
         }
 
         while(! queue.isEmpty() ) {
-            examined = queue.dequeue();
+            examined = queue.poll();
+
+            if(examined == null) {
+                return false;
+            }
             if(examined.getDestination() == destination) {
                 return true;
             }
@@ -78,7 +79,7 @@ public class MyHolidaysFlightGraph implements HolidaysFlightGraph {
                         }
 
                         if(! checked.contains(con)) {
-                            queue.enqueue(con);
+                            queue.add(con);
                             checked.add(con);
                         }
                     }
