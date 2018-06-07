@@ -17,7 +17,7 @@ public class ArrayQueue<T> implements ICustomQueue<T> {
 
         boolean isAdded;
 
-        if(queueSize() == array.length) {
+        if(size() == array.length) {
             isAdded = extendArrayAndAddElement(element);
         } else {
             this.array[numberOfElements] = element;
@@ -30,7 +30,7 @@ public class ArrayQueue<T> implements ICustomQueue<T> {
 
     @Override
     public T peek() {
-        if(queueSize() == 0) {
+        if(size() == 0) {
             throw new QueueUnderflow();
         }
         return array[0];
@@ -53,18 +53,13 @@ public class ArrayQueue<T> implements ICustomQueue<T> {
     }
 
     @Override
-    public int queueSize() {
+    public int size() {
         return numberOfElements;
     }
 
     @Override
     public boolean isEmpty() {
-        return queueSize() == 0;
-    }
-
-    @Override
-    public boolean enqueue(T value, Integer priority) {
-        throw new NotImplementedException();
+        return size() == 0;
     }
 
     private boolean extendArrayAndAddElement(T elementToAdd) {
@@ -78,7 +73,7 @@ public class ArrayQueue<T> implements ICustomQueue<T> {
         for(int i=0; i<this.array.length; i++) {
             extendedArray[i] = this.array[i];
         }
-        int firstNotOccupiedIndex = queueSize();
+        int firstNotOccupiedIndex = size();
         extendedArray[firstNotOccupiedIndex] = elementToAdd;
 
         this.array = extendedArray;

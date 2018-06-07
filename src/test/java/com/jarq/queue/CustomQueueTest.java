@@ -17,31 +17,18 @@ public class CustomQueueTest {
     }
 
     @Test
-    public void testEnqueue_with_priority() {
-        assertTrue(queue.enqueue("one", 1));
-    }
-
-    @Test
     public void testPeek_with_one_element() {
         queue.enqueue("one");
         assertEquals("one", queue.peek());
     }
-
 
     @Test
     public void testPeek_with_three_element() {
         queue.enqueue("one");
         queue.enqueue("two");
         queue.enqueue("three");
+        System.out.println(queue);
         assertEquals("one", queue.peek());
-    }
-
-    @Test
-    public void testPeek_with_three_element_and_priority() {
-        queue.enqueue("one");
-        queue.enqueue("two", 2);
-        queue.enqueue("three", 1);
-        assertEquals("two", queue.peek());
     }
 
     @Test
@@ -59,23 +46,15 @@ public class CustomQueueTest {
     }
 
     @Test
-    public void testDequeue_with_three_element_and_priority() {
-        queue.enqueue("one");
-        queue.enqueue("two", 1);
-        queue.enqueue("three", 3);
-        assertEquals("three", queue.dequeue());
-    }
-
-    @Test
     public void testQueueSize_if_empty() {
-        assertEquals(0, queue.queueSize());
+        assertEquals(0, queue.size());
     }
 
     @Test
-    public void testQueueSize_if_to_elements_inside() {
+    public void testQueueSize_if_two_elements_inside() {
         queue.enqueue("one");
         queue.enqueue("two");
-        assertEquals(2, queue.queueSize());
+        assertEquals(2, queue.size());
     }
 
     @Test

@@ -3,105 +3,89 @@ package com.jarq.queue;
 public class CustomQueue<T> implements ICustomQueue<T> {
 
     private Node<T> head;
+    private Node<T> tail;
+    private int size = 0;
 
     public CustomQueue() {
-        this.head = new Node<>(null, null);
+        this.head = new Node<>(null, tail);
+        this.tail = new Node<>(null, null);
     }
     
     @Override
     public boolean enqueue(T value) {
-        return enqueue(value, 0);
-    }
-
-    @Override
-    public boolean enqueue(T value, Integer priority) {
-        Node<T> first = head.getNextNode();
-        if(first == null) {
-            head.setNextNode(new Node<>(value, null, priority));
+        if(size == 0) {
+            head.value = value;
         }
-
-        Node<T> current = head;
-        Node<T> next = first;
-
-        while(next != null && next.getPriority() >= priority) {
-            current = next;
-            next = next.getNextNode();
+        else if(size == 1) {
+            tail.value = value;
+        } else {
+            tail.nextNode = new Node<>(value, null);
+            tail = tail.nextNode;
         }
-
-        current.setNextNode(new Node<>(value, next, priority));
+        size++;
         return true;
     }
 
     @Override
     public T peek() {
-        Node<T> first = head.getNextNode();
-        if(first == null) {
-            return null;
-        }
-        return first.getValue();
+        return head.value;
     }
 
     @Override
     public T dequeue() {
-        Node<T> first = head.getNextNode();
-        if(first == null) {
+        if(size == 0) {
             return null;
         }
-
-        Node<T> second = first.getNextNode();
-        head.setNextNode(second);
-        return first.getValue();
+        T value = head.value;
+        if(size == 1) {
+            head.value = null;
+        }
+        else if(size == 2) {
+            head.value = tail.value;
+            tail.value = null;
+        } else {
+            head = head.nextNode;
+        }
+        size--;
+        return value;
     }
 
     @Override
-    public int queueSize() {
+    public int size() {
+        return size;
+    }
 
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
         Node<T> node = head;
-        int counter = 0;
+
         while(node.getNextNode() != null) {
+
             node = node.getNextNode();
-            counter++;
+            stringBuilder.append(String.valueOf(node.value));
+            stringBuilder.append("; ");
         }
-        return counter;
+        return stringBuilder.toString();
     }
 
     @Override
     public boolean isEmpty() {
-        return head.getNextNode() == null;
+        return size==0;
     }
 
     private class Node<V> {
 
         private V value;
         private Node<V> nextNode;
-        private int priority;
 
         private Node(V value, Node<V> nextNode) {
             this.value = value;
             this.nextNode = nextNode;
-            this.priority = 0;
-        }
-
-        private Node(V value, Node<V> nextNode, int priority) {
-            this.value = value;
-            this.nextNode = nextNode;
-            this.priority = priority;
-        }
-
-        private V getValue() {
-            return value;
         }
 
         private Node<V> getNextNode() {
             return nextNode;
-        }
-
-        private void setNextNode(Node<V> node) {
-            nextNode = node;
-        }
-
-        private int getPriority() {
-            return priority;
         }
 
         @Override
@@ -109,7 +93,6 @@ public class CustomQueue<T> implements ICustomQueue<T> {
             return "Node{" +
                     "value=" + value +
                     ", nextNode=" + nextNode +
-                    ", priority=" + priority +
                     '}';
         }
     }

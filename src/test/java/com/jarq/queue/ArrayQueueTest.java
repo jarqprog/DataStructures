@@ -10,7 +10,7 @@ public class ArrayQueueTest {
 
     @Test
     public void queueSize_if_empty() {
-        assertEquals(0, queue.queueSize());
+        assertEquals(0, queue.size());
     }
 
     @Test
@@ -61,7 +61,7 @@ public class ArrayQueueTest {
         assertTrue(queue.enqueue("Da"));
         assertTrue(queue.enqueue("An"));
 
-        assertEquals(3, queue.queueSize());
+        assertEquals(3, queue.size());
         assertEquals("Ad", queue.peek());
     }
 
@@ -74,7 +74,7 @@ public class ArrayQueueTest {
             loopsNumber--;
         }
 
-        assertEquals(50, queue.queueSize());
+        assertEquals(50, queue.size());
         assertEquals("50", queue.peek());
     }
 
@@ -90,7 +90,7 @@ public class ArrayQueueTest {
 
 
         assertEquals("2", queue.dequeue());
-        assertEquals(0, queue.queueSize());
+        assertEquals(0, queue.size());
         assertTrue(queue.isEmpty());
     }
 
@@ -103,7 +103,7 @@ public class ArrayQueueTest {
 
 
         assertEquals("1", queue.dequeue());
-        assertEquals(2, queue.queueSize());
+        assertEquals(2, queue.size());
         assertFalse(queue.isEmpty());
     }
 
