@@ -7,47 +7,33 @@ public class CustomQueue<T> implements ICustomQueue<T> {
     private int size = 0;
 
     public CustomQueue() {
-        this.head = new Node<>(null, tail);
-        this.tail = new Node<>(null, null);
+        this.head = new Node<>(null, null, tail);
+        this.tail = new Node<>(null, head,null);
     }
     
     @Override
     public boolean enqueue(T value) {
-        if(size == 0) {
-            head.value = value;
-        }
-        else if(size == 1) {
-            tail.value = value;
-        } else {
-            tail.nextNode = new Node<>(value, null);
-            tail = tail.nextNode;
-        }
+        Node<T> node = new Node<>(value, tail.previous, tail);
+        tail.previous.next = node;
+        tail.previous = node;
         size++;
         return true;
     }
 
     @Override
     public T peek() {
-        return head.value;
+        return head.next.value;
     }
 
     @Override
     public T dequeue() {
-        if(size == 0) {
-            return null;
-        }
-        T value = head.value;
-        if(size == 1) {
-            head.value = null;
-        }
-        else if(size == 2) {
-            head.value = tail.value;
-            tail.value = null;
-        } else {
-            head = head.nextNode;
+        Node<T> node = head.next;
+        head.next = node.next;
+        if(node.next != null) {
+            node.next.previous = head;
         }
         size--;
-        return value;
+        return node.value;
     }
 
     @Override
@@ -60,9 +46,9 @@ public class CustomQueue<T> implements ICustomQueue<T> {
         StringBuilder stringBuilder = new StringBuilder();
         Node<T> node = head;
 
-        while(node.getNextNode() != null) {
+        while(node.getNext() != null) {
 
-            node = node.getNextNode();
+            node = node.getNext();
             stringBuilder.append(String.valueOf(node.value));
             stringBuilder.append("; ");
         }
@@ -77,23 +63,27 @@ public class CustomQueue<T> implements ICustomQueue<T> {
     private class Node<V> {
 
         private V value;
-        private Node<V> nextNode;
+        private Node<V> previous;
+        private Node<V> next;
 
-        private Node(V value, Node<V> nextNode) {
+        private Node(V value, Node<V> previous, Node<V> nextNode) {
             this.value = value;
-            this.nextNode = nextNode;
+            this.previous = previous;
+            this.next = nextNode;
         }
 
-        private Node<V> getNextNode() {
-            return nextNode;
+        private Node<V> getNext() {
+            return next;
         }
 
         @Override
         public String toString() {
             return "Node{" +
                     "value=" + value +
-                    ", nextNode=" + nextNode +
+                    ", previous=" + previous +
+                    ", next=" + next +
                     '}';
         }
+
     }
 }
