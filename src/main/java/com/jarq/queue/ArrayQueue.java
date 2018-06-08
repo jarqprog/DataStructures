@@ -1,7 +1,5 @@
 package com.jarq.queue;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class ArrayQueue<T> implements ICustomQueue<T> {
 
     private T[] array;
