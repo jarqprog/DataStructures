@@ -4,12 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * test for queue with default comparator (min heap)
- */
-public class CustomPriorityQueueTestDefaultConstructor {
+public class MinHeapPriorityQueueTest {
 
-    private ICustomQueue<Integer> priorityQueue = new CustomPriorityQueue<>();
+    private ICustomQueue<Integer> priorityQueue = new MinHeapPriorityQueue<>();
 
     @Test
     public void size_with_empty_queue() {
@@ -33,6 +30,7 @@ public class CustomPriorityQueueTestDefaultConstructor {
 
     @Test
     public void enqueue_add_one_element() {
+
         assertTrue(priorityQueue.enqueue(1));
         assertEquals(1, priorityQueue.size());
         assertFalse(priorityQueue.isEmpty());
@@ -50,7 +48,7 @@ public class CustomPriorityQueueTestDefaultConstructor {
 
     @Test
     public void dequeue_with_one_element() {
-        Integer number = 1;
+        Integer number = 2;
         priorityQueue.enqueue(number);
 
         Integer result = priorityQueue.dequeue();
@@ -75,18 +73,18 @@ public class CustomPriorityQueueTestDefaultConstructor {
 
     @Test
     public void size() {
-        priorityQueue.enqueue(2);
-        priorityQueue.enqueue(1);
-        priorityQueue.enqueue(3);
+        priorityQueue.enqueue(20);
         priorityQueue.enqueue(10);
+        priorityQueue.enqueue(33);
+        priorityQueue.enqueue(110);
 
         assertEquals(4, priorityQueue.size());
     }
 
     @Test
     public void dequeue_two_elements() {
-        Integer first = 2;
-        Integer second = 0;
+        Integer first = 3;
+        Integer second = 1;
 
         priorityQueue.enqueue(first);
         priorityQueue.enqueue(second);
@@ -100,15 +98,15 @@ public class CustomPriorityQueueTestDefaultConstructor {
 
     @Test
     public void dequeue_multiple_elements() {
-        Integer two = 2;
+        Integer three = 3;
         Integer zero = 0;
         Integer ten = 10;
         Integer minusOne = -1;
         Integer minusTen = -10;
         Integer five = 5;
-        Integer twenty = 20;
+        Integer twentyOne = 21;
 
-        priorityQueue.enqueue(two);
+        priorityQueue.enqueue(three);
         priorityQueue.enqueue(ten);
         priorityQueue.enqueue(minusTen);
         priorityQueue.enqueue(minusOne);
@@ -127,13 +125,13 @@ public class CustomPriorityQueueTestDefaultConstructor {
         assertEquals(4, priorityQueue.size());
         assertFalse(priorityQueue.isEmpty());
 
-        priorityQueue.enqueue(twenty);
-        priorityQueue.enqueue(twenty);
+        priorityQueue.enqueue(twentyOne);
+        priorityQueue.enqueue(twentyOne);
 
         assertEquals(zero, priorityQueue.dequeue());
         assertEquals(5, priorityQueue.size());
 
-        assertEquals(two, priorityQueue.dequeue());
+        assertEquals(three, priorityQueue.dequeue());
         assertEquals(4, priorityQueue.size());
         assertFalse(priorityQueue.isEmpty());
 
@@ -144,11 +142,12 @@ public class CustomPriorityQueueTestDefaultConstructor {
         assertEquals(2, priorityQueue.size());
         assertFalse(priorityQueue.isEmpty());
 
-        assertEquals(twenty, priorityQueue.dequeue());
+        assertEquals(twentyOne, priorityQueue.dequeue());
         assertEquals(1, priorityQueue.size());
 
-        assertEquals(twenty, priorityQueue.dequeue());
+        assertEquals(twentyOne, priorityQueue.dequeue());
         assertEquals(0, priorityQueue.size());
         assertTrue(priorityQueue.isEmpty());
     }
+
 }

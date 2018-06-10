@@ -27,7 +27,6 @@ public class CustomQueueTest {
         queue.enqueue("one");
         queue.enqueue("two");
         queue.enqueue("three");
-        System.out.println(queue);
         assertEquals("one", queue.peek());
     }
 
